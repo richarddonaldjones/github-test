@@ -1,0 +1,248 @@
+
+  class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                User u = new User();
+                takeInputFromUserIn(u);
+                Console.WriteLine(u.getUserFortune());
+                Console.WriteLine("Do you want another Fortune (Y/N)?");
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Y)
+                {
+                    Console.Clear();
+                    continue;
+                }
+                else if(key.Key == ConsoleKey.N)
+                    checkQuitCommand("quit");
+            }
+
+        }
+
+        public static void takeInputFromUserIn(User u)
+        {
+            string inputString,s;
+            Console.Write("Enter First Name: ");
+            u.first_name = Console.ReadLine();
+            while (u.first_name.Length == 0)
+            {
+                ClearLastConsoleLineUpto(18);
+                u.first_name = Console.ReadLine();
+
+            }
+            checkQuitCommand(u.first_name);
+
+            Console.Out.Write("Enter Last Name: ");
+            u.last_name = Console.ReadLine();
+            while (u.last_name.Length == 0)
+            {
+                ClearLastConsoleLineUpto(17);
+                u.last_name = Console.ReadLine();
+            }
+            checkQuitCommand(u.last_name);
+
+            //Input Age
+            s = "What is your age?: ";
+            Console.Write(s);
+            inputString = Console.ReadLine();
+            checkQuitCommand(inputString);
+            while (!int.TryParse(inputString, out u.age)||u.age<1||u.age>100)
+            {
+                ClearLastConsoleLineUpto(s.Length);
+                inputString = Console.ReadLine();
+                checkQuitCommand(inputString);
+            }
+
+            //Input Age Month
+
+            do
+            {
+                Console.Out.Write("Enter your age month(1-12): ");
+                inputNumeric(out inputString, 2);
+                if (int.TryParse(inputString, out u.birth_month))
+                {
+                    break;
+                }
+            } while (inputString.Length == 0);
+
+
+            //Input Color
+            Console.WriteLine();
+            s = "Enter your favorite ROYGBIV color(Doesn't have idea about ROYGBIV type HELP): ";
+            Console.Write(s);
+            inputString = Console.ReadLine();
+            checkQuitCommand(inputString);
+            if (!validateColor(inputString, out u.favorite_color))
+            {
+                s = "Invalid color Please Enter Again: ";
+                Console.Write(s);
+                inputString = Console.ReadLine();
+                checkQuitCommand(inputString);
+
+                while (!validateColor(inputString, out u.favorite_color))
+                {
+                    ClearLastConsoleLineUpto(s.Length);
+                    inputString = Console.ReadLine();
+                    checkQuitCommand(inputString);
+                }
+            }
+
+            /*********************************/
+            //Input Siblings
+
+            s = "How many siblings do you have?: ";
+            Console.WriteLine();
+            Console.Write(s);
+            inputString = Console.ReadLine();
+            checkQuitCommand(inputString);
+            while (!int.TryParse(inputString,out u.no_of_siblings))
+            {
+                ClearLastConsoleLineUpto(s.Length);
+                inputString = Console.ReadLine();
+                checkQuitCommand(inputString);
+            }
+
+        }
+        public static void showROYGBIV()
+        {
+            Console.WriteLine("Choose your color from list:");
+            Console.WriteLine("1 - Red");
+            Console.WriteLine("2 - Orange");
+            Console.WriteLine("3 - Yellow");
+            Console.WriteLine("4 - Green");
+            Console.WriteLine("5 - Blue");
+            Console.WriteLine("6 - Indigo");
+            Console.WriteLine("7 - Voilet");
+        }
+
+        public static string getColorFromInputMenu()
+        {
+            string s = "Enter color Code (1-7):", s2;
+            Console.Write(s);
+            inputNumeric(out s2, 1);
+            while (int.Parse(s2) < 1 || int.Parse(s2) > 7)
+            {
+                ClearCurrentConsoleLineUpto(0);
+                s = "Invalid Input Please choose correct color: ";
+                Console.Write(s);
+                inputNumeric(out s2, 1);
+            }
+            switch (s2) {
+                case "1":return "red";
+                case "2": return "orange";
+                case "3": return "yellow";
+                case "4": return "green";
+                case "5": return "blue";
+                case "6": return "indigo";
+                case "7": return "voilet";
+            }
+            return "";
+
+         
+        }
+
+        public static bool validateColor(string input, out string color)
+        {
+            input = input.ToLower();
+            if (input == "help")
+            {
+                showROYGBIV();
+                color = getColorFromInputMenu();
+                return true;
+            }
+            else if (input == "red")
+            {
+                color = "red";
+                return true;
+            }
+            else if (input == "orange")
+            {
+                color = "orange";
+                return true;
+            }
+            else if (input == "yellow")
+            {
+                color = "yellow";
+                return true;
+            }
+            else if (input == "green")
+            {
+                color = "green";
+                return true;
+            }
+            else if (input == "blue")
+            {
+                color = "blue";
+                return true;
+            }
+            else if (input == "indigo")
+            {
+                color = "indigo";
+                return true;
+            }
+            else if (input == "voilet")
+            {
+                color = "voilet";
+                return true;
+            }
+            else
+            {
+                color = "";
+                return false;
+            }
+
+
+        }
+
+        public static void ClearLastConsoleLineUpto(int length)
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(length, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(length, currentLineCursor - 1);
+
+        }
+        public static void ClearCurrentConsoleLineUpto(int length)
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(length, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(length, currentLineCursor);
+
+        }
+
+        public static void inputNumeric(out string s, int length = 5)
+        {
+            s = "";
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.D0 || key.Key == ConsoleKey.NumPad0 || key.Key == ConsoleKey.D1 || key.Key == ConsoleKey.NumPad1 || key.Key == ConsoleKey.D2 || key.Key == ConsoleKey.NumPad2 || key.Key == ConsoleKey.D3 || key.Key == ConsoleKey.NumPad3 || key.Key == ConsoleKey.D4 || key.Key == ConsoleKey.NumPad4 || key.Key == ConsoleKey.D5 || key.Key == ConsoleKey.NumPad5 || key.Key == ConsoleKey.D6 || key.Key == ConsoleKey.NumPad6 || key.Key == ConsoleKey.D7 || key.Key == ConsoleKey.NumPad7 || key.Key == ConsoleKey.D8 || key.Key == ConsoleKey.NumPad8 || key.Key == ConsoleKey.D9 || key.Key == ConsoleKey.NumPad9)
+                {
+                    s += key.KeyChar;
+                    Console.Write(key.KeyChar);
+                }
+                else if (key.Key == ConsoleKey.Backspace && s.Length > 0)
+                {
+                    s = s.Substring(0, s.Length - 1);
+                    Console.Write("\b \b");
+                }
+
+            } while (s.Length < 1 || key.Key != ConsoleKey.Enter && s.Length < length);
+        }
+
+        public static void checkQuitCommand(string command)
+        {
+            if (command.ToLower() == "quit")
+            {
+                Console.WriteLine("\nNobody likes a quitter...");
+                Environment.Exit(1);
+            }
+        }
+
+
+    }
+}
